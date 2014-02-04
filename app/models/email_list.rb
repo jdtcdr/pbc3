@@ -104,6 +104,7 @@ class EmailList
         list.new_record = false
         result << list
       end
+    end
     result.sort{|l1, l2| l1.name <=> l2.name}
   end
   

@@ -97,12 +97,13 @@ class EmailList
   
   def self.load(cmd)
     result = []
-    %x(#{cmd}).split("\n").map do |name|
-      next if name =~ /:$/ or 'mailman' == name.strip
-      list = EmailList.new(:name => name.strip)
-      list.new_record = false
-      result << list
-    end
+    if output = %x(#{cmd})
+      output.split("\n").map do |name|
+        next if name =~ /:$/ or 'mailman' == name.strip
+        list = EmailList.new(:name => name.strip)
+        list.new_record = false
+        result << list
+      end
     result.sort{|l1, l2| l1.name <=> l2.name}
   end
   

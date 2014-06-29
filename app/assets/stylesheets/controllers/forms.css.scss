@@ -1,3 +1,5 @@
+$editing-background: #f2f2f2;
+
 header {
   div.form_event {
     margin-top: 5px;
@@ -10,6 +12,49 @@ header {
   }
 }
 
+#filled_form_header {
+  span.parent_form, span.sign_in {
+    &:after {
+      padding: 0px 10px;
+      content: '>';
+      color: #ccc;
+      font-size: 20px;
+    }
+  }
+  
+  h1 {
+    font-weight: normal;
+    white-space: normal;
+    
+    > span {
+      white-space: nowrap;
+    }
+    
+    a {
+      color: #333;
+      font-size: 20px;
+      
+      &:hover {
+        color: $link-hover-color;
+      }
+    }
+  }
+  
+  span.form_name.blocked {
+    color: #ccc;
+  }
+  
+  span.child_form {
+    color: #ccc;
+
+    &:before {
+      padding: 0px 10px;
+      content: '>';
+      font-size: 20px;
+    }
+  }
+}
+
 #forms {
   .event_range {
     padding-left: 15px;
@@ -17,18 +62,119 @@ header {
   }
 }
 
-#dynamic_form_fields {
+ul.dynamic_form_sections {
+	list-style: none;
+	margin: 0 -10px;
+	width: 800px;
+	padding: 0px 20px 0px 0px;
+  
+  li.form_section {
+    position: relative;
+    padding-bottom: 10px;
+    
+    &:hover {
+      background-color: #fffcf8;
+    }
+    
+    > header {
+      padding: 10px;
+      margin: 0px;
+      
+      &:hover {
+        background-color: $editing-background;
+        
+        .dynamic_form_field_admin {
+          background-color: $editing-background;
+        }
+      }
+    }
+    
+    > .actions {
+      padding: 0px 10px;
+      
+      &.dynamic_form {
+        margin-bottom: 0px;
+      }
+    }
+    
+    .edit_form_section {
+      padding: 20px;
+      background-color: $editing-background;
+      border-top: 1px dashed #ccc;
+      
+      > .admin {
+        position: absolute;
+        top: 0px;
+        right: -140px;
+        min-width: 120px;
+        padding: 10px;
+        background-color: $editing-background;
+        border-top: 1px dashed #ccc;
+      }
+    }
+  }
+}
+
+ul.dynamic_form_fields {
 	list-style: none;
 	margin: 0;
 	width: 800px;
 	padding: 0px 20px 0px 0px;
 	
 	li.form_field {
-		margin: 20px 0px;
+    position: relative;
+    padding: 10px;
+    
+    &:hover {
+      background-color: $editing-background;
+      
+      > .dynamic_form_field_admin {
+        background-color: $editing-background;
+      }
+    }
+    
+    form.edit_form_field {
+      
+      > div.form_field.header {
+        label {
+          width: auto;
+          margin-left: 0px;
+        }
+      }
+      
+      div.field {
+        max-width: 600px;
+        
+        &.inactive {
+          margin: 0px;
+          max-width: 0px;
+          overflow: hidden;
+        }
+        
+        label {
+          width: auto;
+        }
+      }
+    }
 	}
 }
 
-.dynamic_form_field_name {
+ul.form_field_options {
+  li.form_field_option {
+    position: relative;
+    padding: 10px;
+    
+    &:hover {
+      background-color: $editing-background;
+      
+      > .dynamic_form_field_admin {
+        background-color: $editing-background;
+      }
+    }
+  }
+}
+
+.dynamic_form_field_name, .dynamic_form_section_name {
   min-width: 150px;
   cursor: move;
 }
@@ -47,9 +193,11 @@ div.form_field {
 }
 
 .dynamic_form_field_admin {
-	clear: right;
-	float: right;
-	margin-left: 10px;
+  position: absolute;
+  top: 0px;
+  right: -140px;
+  min-width: 120px;
+  padding: 10px;
 	
 	a {
 		color: #bbb;
@@ -61,13 +209,20 @@ div.form_field {
 	}
 }
 
+li.editing > form > .admin {
+  padding: 10px;
+  position: absolute;
+  top: -1px;
+  right: -140px;
+  min-width: 120px;
+  background-color: $editing-background;
+  border-top: 1px dashed #ccc;
+}
+
 .form_field.editing {
-	background-color: #f8f8f8;
+	background-color: $editing-background;
 	padding: 20px;
-	
-	.admin {
-  	float: right;
-  }
+  border-top: 1px dashed #ccc;
 }
 
 .form_field_options {
@@ -135,11 +290,16 @@ h2.dynamic_form_field_name {
 
 div.actions.dynamic_form {
   margin: 20px 0px;
+  
+  span.errors {
+    color: #c33;
+    padding: 0px 10px;
+  }
 }
 	
 #submitted_form_list {
-	background-color: #f8f8f8;
-	padding: 10px 20px 20px 20px;
+	//background-color: #f8f8f8;
+	//padding: 10px 20px 20px 20px;
 	margin-bottom: 20px;
 	
 	h2 {
@@ -159,6 +319,7 @@ div.actions.dynamic_form {
 		
 		li {
 			padding: 4px 10px;
+      margin-bottom: 5px;
 			
 			a {
   		  display: block;
@@ -166,22 +327,18 @@ div.actions.dynamic_form {
   		
   		.form_submitter, .form_date, .form_amount {
   		  display: block;
-  		  padding-left: 10px;
+  		  padding-left: 20px;
 			  color: #666;
 			  font-weight: normal;
 			  white-space: nowrap;
 			}
 			
 			&.active {
-  			background-color: #999;
-  			
-  			a, .form_submitter, .form_date, .form_amount, .help {
-  				color: #eee;
-  			}
+  			background-color: #eee;
   		}
   		
   		&:hover {
-  		  background-color: #ddd;
+  		  background-color: #f8f8f8;
   		  cursor: pointer;
   		  
   		  a:hover {
@@ -192,22 +349,65 @@ div.actions.dynamic_form {
 	}
 }
 
+#form_payment_list {
+  margin-bottom: 20px;
+  
+	ul {
+		list-style: none;
+		margin: 0px;
+		padding: 0px;
+		text-align: left;
+		max-height: 800px;
+		overflow: auto;
+		
+		li {
+			padding: 4px 10px;
+      margin-bottom: 5px;
+			
+			a {
+  		  display: block;
+        
+        span {
+          white-space: nowrap;
+        }
+  		}
+      
+      form {
+        margin-left: 10px;
+      }
+		}
+	}
+}
+
 #new_filled_form_button {
   padding-left: 20px;
   margin-bottom: 20px;
 }
 
-#filled_fields {
+div#included_parent_form {
+  display: none;
+}
+
+#filled_fields, #filled_sections, .filled_fields {
 	list-style: none;
 	margin: 0px;
 	padding: 0px;
 	
 	.form_field {
-	  /*float: left;*/
 	  clear: left;
 		padding: 5px 0px;
-		/*margin-right: 30px;*/
 		margin-bottom: 10px;
+    
+    &.error {
+      position: relative;
+      background-color: #fdd;
+      padding-left: 10px;
+      left: -10px;
+    }
+    
+    .form_field_value.prompted {
+      margin-left: 170px;
+    }
 	}
 }
 
@@ -219,6 +419,14 @@ div.actions.dynamic_form {
 	font-size: 14px;
 	font-weight: bold;
 	min-width: 150px;
+  max-width: 150px;
+}
+
+.form_field_prompt {
+	color: #999;
+	font-size: 14px;
+	font-weight: bold;
+  margin-bottom: 5px;
 }
 
 h2.form_field_name {
@@ -230,6 +438,10 @@ h2.form_field_name {
 
 .form_field_value {
   display: inline-block;
+  
+  .value {
+    margin-right: 20px;
+  }
 }
 
 .form_field_help {
@@ -242,42 +454,65 @@ h2.form_field_name {
   color: inherit;
 }
 
-.options_list {
-	display: inline-block;
-	list-style: none;
-	margin: 0px;
-	padding: 0px;
+#filled_sections, #filled_fields {
+  .options_list {
+  	display: inline-block;
+  	list-style: none;
+  	margin: 0px;
+  	padding: 0px;
+  
+    &.dense {
+      > li {
+        display: inline-block;
+      
+        .option_name {
+          min-width: 0px;
+        }
+      }
+    }
+  }
+  
+  div.form_field_options_limit {
+    display: inline-block;
+    color: #999;
+    font-style: italic;
+  }
 }
 
-#filled_fields {
+#filled_fields, #filled_sections {
   
   .option_name {
 		display: inline-block;
+    vertical-align: top;
 		padding-right: 20px;
 		min-width: 80px;
 	}
 	.option_help {
 		display: inline-block;
+    vertical-align: top;
+    max-width: 400px;
+    margin-bottom: 10px;
 	}
-	
-	li.form_field.dense {
-    float: left;
-    clear: none;
-    padding: 2px 0px;
-    margin: 0px;
-    
-    input {
-      padding: 2px;
-    }
-  }
 }
 
-.edit_filled_form hr {
-  clear: both;
+.edit_filled_form, .new_filled_form {
+  div.form_timestamp {
+    margin-top: 10px;
+    color: #999;
+    font-style: italic;
+  }
+  div#form_fill_submitter {
+    clear: both;
+    margin-top: 5px;
+    text-align: right;
+  }
 }
 
 .filled_form_payment {
   margin-bottom: 20px;
+  padding-top: 10px;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
   
   h3 {
     margin: 0px 0px 15px 0px;
@@ -438,4 +673,19 @@ div.form_admin {
 .payment_method_instructions {
   /*display: inline-block;*/
   margin: 20px 0px;
+}
+
+#form_authenticate {
+  margin-top: 30px;
+  
+  #authentication_text {
+    display: inline-block;
+    vertical-align: top;
+    max-width: 400px;
+  }
+  #sign_in {
+    display: inline-block;
+    vertical-align: top;
+    margin: 0px 0px 0px 60px;
+  }
 }

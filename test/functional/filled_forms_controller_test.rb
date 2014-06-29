@@ -32,15 +32,28 @@ class FilledFormsControllerTest < ActionController::TestCase
   end
 
   test "should create filled_form" do
+    # build reasonable field values
     fields = {}
-    @form.form_fields.each{|f| fields[f.id] = {:value => 'test'}}
+    @form.form_fields.each do |form_field|
+      value = case form_field.field_type
+      when FormField::SINGLE_LINE, FormField::MULTIPLE_LINES
+        'test'
+      when FormField::SINGLE_CHOICE
+        form_field.form_field_options.first.id.to_s
+      when FormField::MULTIPLE_CHOICE
+        [form_field.form_field_options.first.id.to_s]
+      when FormField::COUNT
+        "2"
+      end
+      fields[form_field.id.to_s] = {:value => value}
+    end
     assert_difference('FilledForm.count') do
       post :create, :form_id => @form.id, :filled_fields => fields,
         :email_address_confirmation => ''
       #assert false, assigns(:filled_form).errors.full_messages.join("\n")
     end
 
-    assert_redirected_to form_fills_path(assigns(:form))
+    assert_redirected_to friendly_page_path(assigns(:page))
   end
 
   test "should show filled_form" do
@@ -65,8 +78,8 @@ class FilledFormsControllerTest < ActionController::TestCase
     @form.form_fields.each{|f| fields[f.id] = {:value => 'test'}}
     put :update, :form_id => @form.id, :id => @filled_form.to_param,
       :filled_fields => fields
-    #assert_response :success
-    assert_redirected_to form_fills_path(assigns(:form))
+    assert_response :success
+    #assert_redirected_to form_fills_path(assigns(:form))
   end
 
   test "should destroy filled_form" do
@@ -74,6 +87,6 @@ class FilledFormsControllerTest < ActionController::TestCase
       delete :destroy, :form_id => @form.id, :id => @filled_form.to_param
     end
 
-    assert_redirected_to new_form_fill_url(assigns(:form))
+    assert_redirected_to edit_form_fill_url(assigns(:form), assigns(:next_filled_form))
   end
 end

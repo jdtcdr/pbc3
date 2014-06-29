@@ -45,7 +45,7 @@ class PagesController < ApplicationController
       return
     end
     unless @page.authorized?(current_user)
-      session[:post_login_path] = request.original_url
+      session[:post_login_path] = request.original_url # needed?
       redirect_to private_path(:page_id => @page.url)
       return
     end
@@ -67,6 +67,9 @@ class PagesController < ApplicationController
         end
       end
     end
+    if @page.event?
+      @event = @page.events.last
+    end
     if params[:invitation_key]
       @invitation = Invitation.find_by(key: params[:invitation_key])
     end
@@ -80,6 +83,10 @@ class PagesController < ApplicationController
     @feature_children = @page.feature_children(current_user)
     @aspects = @page.visible_aspects(:children => @children,
       :categorized_events => @categorized_events)
+    if @page.parent and @page.parent.blog?
+      @previous_page = @page.previous_sibling
+      @next_page = @page.next_sibling
+    end
 
     respond_to do |format|
       format.html { render :action => "show_#{@page.layout}" }

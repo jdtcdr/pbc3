@@ -277,10 +277,10 @@
       }
 
       a {
-
+        color: inherit;
+        font-weight: bold;
         @include respond-to(normal-up) {
           font-size: 14px;
-          font-weight: bold;
           line-height: 21px;
         }
 

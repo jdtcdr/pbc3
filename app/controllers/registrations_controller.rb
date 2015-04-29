@@ -32,4 +32,10 @@ class RegistrationsController < Devise::RegistrationsController
     session[:post_login_path] ? session[:post_login_path] : root_url
   end
   
+  private
+
+  def sign_up_params
+    params.require(:user).permit(:email, :email_confirmation,
+                                 :password, :password_confirmation, :name)
+  end
 end
